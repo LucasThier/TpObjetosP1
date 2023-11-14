@@ -1,0 +1,125 @@
+import MainParte2.*
+
+describe "Tests de Pou Adulto"
+{
+	const edadInicialPouAdulto = 5
+	method initialize()
+	{
+		pouAdulto.edad(edadInicialPouAdulto)
+	}
+	
+	test "Pou inicializado correctamente"
+	{
+		assert.that(pouAdulto.edad() == edadInicialPouAdulto &&
+			pouAdulto.energiaInicial() == 10 * edadInicialPouAdulto && 
+			pouAdulto.energia() == pouAdulto.energiaInicial() 
+		)
+	}
+	
+	test "Pou Adulto crece al realizar acciones"
+	{
+		pouAdulto.Jugar(pelota)
+		pouAdulto.Jugar(pelota)
+		pouAdulto.Jugar(pelota)
+		pouAdulto.Jugar(pelota)
+		pouAdulto.Jugar(pelota)
+		assert.that(edadInicialPouAdulto < pouAdulto.edad())
+	}
+	
+	test "Alimentos saludables brindan energia"
+	{
+		var energiaInicial = pouAdulto.energia()
+		pouAdulto.Comer(fruta)
+		assert.that(pouAdulto.energia() > energiaInicial)
+	}
+	
+	test "Alimentos fritos reducen la energia"
+	{
+		var energiaInicial = pouAdulto.energia()
+		pouAdulto.Comer(fritura)
+		assert.that(pouAdulto.energia() < energiaInicial)
+	}	
+	
+	test "Estado de salud deplorable"
+	{
+		pouAdulto.Comer(fritura)
+		assert.that(pouAdulto.EstadoDeSalud() == "Deplorable")
+	}
+	
+	test "Estado de salud alarmante"
+	{
+		pouAdulto.Comer(fritura)
+		pouAdulto.Comer(fruta)
+		assert.that(pouAdulto.EstadoDeSalud() == "Alarmante")
+	}
+	
+	test "Estado de salud normal"
+	{
+		//10% de los alimentos son frituras
+		pouAdulto.Comer(fritura)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+
+		//hacer que se ria
+		pouAdulto.Jugar(pelota)
+				
+		assert.that(pouAdulto.EstadoDeSalud() == "Normal")
+	}
+	
+	test "Estado de salud aburrido"
+	{
+		//10% de los alimentos son frituras
+		pouAdulto.Comer(fritura)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+
+		//hacer que se ria
+		pouAdulto.Banarse()
+				
+		assert.that(pouAdulto.EstadoDeSalud() == "Aburrido")
+	}
+	
+	test "error al jugar con otro pou cansado"
+	{
+		//10% de los alimentos son frituras
+		pouAdulto.Comer(fritura)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+		pouAdulto.Comer(fruta)
+
+		//hacer que se ria
+		pouAdulto.Banarse()
+		
+		const amigoNoAburrido = new Mascota()
+		amigoNoAburrido.edad(3)
+		amigoNoAburrido.seRie(true)
+		
+		assert.throwsExceptionLike(
+			new CompanieroDeJuegoCansado(),
+			{pouAdulto.JugarConOtro(amigoNoAburrido)}
+		)
+	}
+}
+
+
+
